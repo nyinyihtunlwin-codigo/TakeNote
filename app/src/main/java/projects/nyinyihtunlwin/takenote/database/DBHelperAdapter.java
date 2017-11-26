@@ -2,7 +2,14 @@ package projects.nyinyihtunlwin.takenote.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
+
+import projects.nyinyihtunlwin.takenote.Utils;
+import projects.nyinyihtunlwin.takenote.models.NoteModel;
 
 /**
  * Created by Dell on 11/23/2017.
@@ -26,19 +33,30 @@ public class DBHelperAdapter {
         db.close();
     }
 
-    public long dataInsert(String fName, String lName, String nrc, String pass, String phno, String address, String city, int gender) {
+    public long dataInsert(String noteContent) {
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.fName, fName);
-        cv.put(DBHelper.lName, lName);
-        cv.put(DBHelper.Nrc, nrc);
-        cv.put(DBHelper.Gender, gender);
-        cv.put(DBHelper.Pass, pass);
-        cv.put(DBHelper.Address, address);
-        cv.put(DBHelper.City, city);
-        cv.put(DBHelper.Phno, phno);
+        cv.put(DBHelper.Note_Content, noteContent);
         long id = db.insert(DBHelper.TB_Name, null, cv);
+        Utils.showToast(context, "Saved.");
         return id;
     }
+
+    public ArrayList<NoteModel> dataQuery() {
+        ArrayList<NoteModel> noteModels = new ArrayList<>();
+        String[] columns = {DBHelper.Note_ID, DBHelper.Note_Content};
+        Cursor c = db.query(DBHelper.TB_Name, columns, null, null, null, null, null);
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            int idIndex = c.getColumnIndex(DBHelper.Note_ID);
+            int contentIndex = c.getColumnIndex(DBHelper.Note_Content);
+            NoteModel noteModel = new NoteModel();
+            noteModel.setId(c.getInt(idIndex));
+            noteModel.setContent(c.getString(contentIndex));
+            noteModels.add(noteModel);
+        }
+        return noteModels;
+    }
+
 
    /* public Student dataQuery(String userName, String pass) {
         String[] columns = {MyHelper.fName, MyHelper.lName, MyHelper.Nrc, MyHelper.Gender, MyHelper.Pass, MyHelper.Address, MyHelper.City, MyHelper.Phno};
@@ -72,33 +90,5 @@ public class DBHelperAdapter {
         }
         return student;
     }
-
-    public ArrayList<Student> dataUpload() {
-        String[] columns = {MyHelper.fName, MyHelper.lName, MyHelper.Nrc, MyHelper.Gender, MyHelper.Pass, MyHelper.Address, MyHelper.City, MyHelper.Phno};
-        Cursor c = db.query(MyHelper.TB_Name, columns, null, null, null, null, null);
-        ArrayList<Student> stdList = new ArrayList<Student>();
-
-        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            int fNameIndex = c.getColumnIndex(MyHelper.fName);
-            int lNameIndex = c.getColumnIndex(MyHelper.lName);
-            int nrcIndex = c.getColumnIndex(MyHelper.Nrc);
-            int genderIndex = c.getColumnIndex(MyHelper.Gender);
-            int passIndex = c.getColumnIndex(MyHelper.Pass);
-            int addressIndex = c.getColumnIndex(MyHelper.Address);
-            int cityIndex = c.getColumnIndex(MyHelper.City);
-            int phnoIndex = c.getColumnIndex(MyHelper.Phno);
-
-            Student student = new Student();
-            student.setfName(c.getString(fNameIndex));
-            student.setlName(c.getString(lNameIndex));
-            student.setNrc(c.getString(nrcIndex));
-            student.setGender(c.getInt(genderIndex));
-            student.setPass(c.getString(passIndex));
-            student.setAddress(c.getString(addressIndex));
-            student.setCity(c.getString(cityIndex));
-            student.setPhno(c.getString(phnoIndex));
-            stdList.add(student);
-        }
-        return stdList;
-    }*/
+*/
 }

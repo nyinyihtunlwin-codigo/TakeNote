@@ -6,18 +6,14 @@ package projects.nyinyihtunlwin.takenote.models;
 
 public class NoteModel {
     private int id;
-    private String title;
     private String content;
-    private String date;
 
     public NoteModel() {
     }
 
-    public NoteModel(int id, String title, String content, String date) {
+    public NoteModel(int id, String content) {
         this.id = id;
-        this.title = title;
         this.content = content;
-        this.date = date;
     }
 
     public int getId() {
@@ -28,27 +24,11 @@ public class NoteModel {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }
