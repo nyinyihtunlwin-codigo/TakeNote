@@ -5,17 +5,20 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import projects.nyinyihtunlwin.takenote.R;
 import projects.nyinyihtunlwin.takenote.database.DBHelperAdapter;
+import projects.nyinyihtunlwin.takenote.models.NoteModel;
 
 public class TakeNoteActivity extends AppCompatActivity {
 
     private DBHelperAdapter dbHelperAdapter;
-    private EditText etContent;
+    private EditText etTitle, etContent;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, TakeNoteActivity.class);
@@ -26,8 +29,13 @@ public class TakeNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_note);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         dbHelperAdapter = new DBHelperAdapter(getApplicationContext());
+        etTitle = findViewById(R.id.et_note_title);
         etContent = findViewById(R.id.et_note_content);
     }
 
@@ -39,8 +47,15 @@ public class TakeNoteActivity extends AppCompatActivity {
 
     private void saveToDB() {
         dbHelperAdapter.dbOpen();
-        if (!etContent.getText().toString().equals("") || etContent.getText().toString().equals(null)) {
-            dbHelperAdapter.dataInsert(etContent.getText().toString());
+        if (!etTitle.getText().toString().equals("") || etTitle.getText().toString().equals(null)) {
+            String title = etTitle.getText().toString();
+            String content = etContent.getText().toString();
+            NoteModel noteModel = new NoteModel();
+            noteModel.setTitle(title);
+            noteModel.setContent(content);
+            dbHelperAdapter.dataInsert(noteModel);
+        } else {
+            Toast.makeText(getApplicationContext(), "Enter Title", Toast.LENGTH_SHORT).show();
         }
         dbHelperAdapter.dbClose();
     }

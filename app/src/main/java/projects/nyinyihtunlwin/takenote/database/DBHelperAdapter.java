@@ -16,6 +16,7 @@ import projects.nyinyihtunlwin.takenote.models.NoteModel;
  */
 
 public class DBHelperAdapter {
+
     private Context context;
     private DBHelper helper;
     private SQLiteDatabase db;
@@ -33,9 +34,10 @@ public class DBHelperAdapter {
         db.close();
     }
 
-    public long dataInsert(String noteContent) {
+    public long dataInsert(NoteModel note) {
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.Note_Content, noteContent);
+        cv.put(DBHelper.Note_Title, note.getTitle());
+        cv.put(DBHelper.Note_Content, note.getContent());
         long id = db.insert(DBHelper.TB_Name, null, cv);
         Utils.showToast(context, "Saved.");
         return id;
@@ -48,9 +50,11 @@ public class DBHelperAdapter {
 
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
             int idIndex = c.getColumnIndex(DBHelper.Note_ID);
+            int titleIndex = c.getColumnIndex(DBHelper.Note_Title);
             int contentIndex = c.getColumnIndex(DBHelper.Note_Content);
             NoteModel noteModel = new NoteModel();
             noteModel.setId(c.getInt(idIndex));
+            noteModel.setTitle(c.getString(titleIndex));
             noteModel.setContent(c.getString(contentIndex));
             noteModels.add(noteModel);
         }

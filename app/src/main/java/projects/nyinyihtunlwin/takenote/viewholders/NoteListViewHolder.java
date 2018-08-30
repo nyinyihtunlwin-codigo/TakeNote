@@ -13,10 +13,11 @@ import projects.nyinyihtunlwin.takenote.R;
 
 public class NoteListViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView tvNote;
+    public TextView tvTitle, tvNote;
 
     public NoteListViewHolder(View itemView) {
         super(itemView);
+        tvTitle = itemView.findViewById(R.id.tv_title);
         tvNote = itemView.findViewById(R.id.tv_note);
     }
 }
