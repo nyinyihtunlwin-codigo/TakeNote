@@ -18,9 +18,10 @@ import butterknife.ButterKnife;
 import projects.nyinyihtunlwin.takenote.R;
 import projects.nyinyihtunlwin.takenote.adapters.NoteListAdapter;
 import projects.nyinyihtunlwin.takenote.database.DBHelperAdapter;
+import projects.nyinyihtunlwin.takenote.delegates.NoteListDeligate;
 import projects.nyinyihtunlwin.takenote.models.NoteModel;
 
-public class NoteListActivity extends AppCompatActivity {
+public class NoteListActivity extends AppCompatActivity implements NoteListDeligate{
 
     @BindView(R.id.rv_note_list)
     RecyclerView rvNoteList;
@@ -47,7 +48,7 @@ public class NoteListActivity extends AppCompatActivity {
         dbHelperAdapter = new DBHelperAdapter(this);
         noteList = new ArrayList<>();
         getNotesFromDB();
-        mNoteListAdapter = new NoteListAdapter(getApplicationContext(), noteList);
+        mNoteListAdapter = new NoteListAdapter(getApplicationContext(), noteList,this);
         rvNoteList.setAdapter(mNoteListAdapter);
         rvNoteList.setHasFixedSize(true);
         rvNoteList.setLayoutManager(new GridLayoutManager(this, 2));
@@ -83,5 +84,10 @@ public class NoteListActivity extends AppCompatActivity {
         startActivity(intent);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
+    }
+
+    @Override
+    public void onTapNote(NoteModel noteModel) {
+
     }
 }

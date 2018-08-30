@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import projects.nyinyihtunlwin.takenote.R;
+import projects.nyinyihtunlwin.takenote.activities.NoteListActivity;
+import projects.nyinyihtunlwin.takenote.delegates.NoteListDeligate;
 import projects.nyinyihtunlwin.takenote.models.NoteModel;
 import projects.nyinyihtunlwin.takenote.viewholders.NoteListViewHolder;
 
@@ -22,10 +24,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListViewHolder> {
     private List<NoteModel> dataList;
     private LayoutInflater inflater;
     private Context context;
+    private NoteListDeligate mNoteListDeligate;
 
-    public NoteListAdapter(Context context, List<NoteModel> dataList) {
+    public NoteListAdapter(Context context, List<NoteModel> dataList, NoteListDeligate noteListDeligate) {
         this.dataList = dataList;
         this.context = context;
+        this.mNoteListDeligate=noteListDeligate;
         inflater = LayoutInflater.from(context);
     }
 
@@ -36,9 +40,15 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(NoteListViewHolder holder, int position) {
+    public void onBindViewHolder(NoteListViewHolder holder, final int position) {
         holder.tvNote.setText(dataList.get(position).getContent());
         holder.tvTitle.setText(dataList.get(position).getTitle());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNoteListDeligate.onTapNote(dataList.get(position));
+            }
+        });
     }
 
     @Override
