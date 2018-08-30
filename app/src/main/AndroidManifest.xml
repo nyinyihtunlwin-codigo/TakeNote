@@ -15,6 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.TakeNoteActivity"
             android:label="@string/lb_write_note"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.SplashScreenActivity"

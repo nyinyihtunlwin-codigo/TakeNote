@@ -19,11 +19,11 @@ import projects.nyinyihtunlwin.takenote.viewholders.NoteListViewHolder;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListViewHolder> {
 
-    private ArrayList<NoteModel> dataList;
+    private List<NoteModel> dataList;
     private LayoutInflater inflater;
     private Context context;
 
-    public NoteListAdapter(Context context, ArrayList<NoteModel> dataList) {
+    public NoteListAdapter(Context context, List<NoteModel> dataList) {
         this.dataList = dataList;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -44,5 +44,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListViewHolder> {
     @Override
     public int getItemCount() {
         return dataList.size();
+    }
+
+    public void setData(List<NoteModel> noteList) {
+        this.dataList = noteList;
+        notifyDataSetChanged();
     }
 }

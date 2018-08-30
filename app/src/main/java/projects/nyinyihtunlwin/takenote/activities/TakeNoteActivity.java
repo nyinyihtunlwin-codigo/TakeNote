@@ -2,12 +2,12 @@ package projects.nyinyihtunlwin.takenote.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,6 +19,7 @@ public class TakeNoteActivity extends AppCompatActivity {
 
     private DBHelperAdapter dbHelperAdapter;
     private EditText etTitle, etContent;
+    private FloatingActionButton fabSave;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, TakeNoteActivity.class);
@@ -37,12 +38,23 @@ public class TakeNoteActivity extends AppCompatActivity {
         dbHelperAdapter = new DBHelperAdapter(getApplicationContext());
         etTitle = findViewById(R.id.et_note_title);
         etContent = findViewById(R.id.et_note_content);
+        fabSave = findViewById(R.id.fab_save);
+
+        fabSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveToDB();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        saveToDB();
+        if (etTitle.getText().toString().equals("") && etContent.getText().toString().equals("")) {
+            super.onBackPressed();
+        } else {
+            saveToDB();
+        }
     }
 
     private void saveToDB() {
@@ -54,6 +66,7 @@ public class TakeNoteActivity extends AppCompatActivity {
             noteModel.setTitle(title);
             noteModel.setContent(content);
             dbHelperAdapter.dataInsert(noteModel);
+            super.onBackPressed();
         } else {
             Toast.makeText(getApplicationContext(), "Enter Title", Toast.LENGTH_SHORT).show();
         }
@@ -61,21 +74,9 @@ public class TakeNoteActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_take_note, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_save_note) {
-            saveToDB();
-            Intent intent = NoteListActivity.newIntent(getApplicationContext());
-            startActivity(intent);
-        } else if (id == android.R.id.home) {
+        if (id == android.R.id.home) {
             onBackPressed();
         }
 

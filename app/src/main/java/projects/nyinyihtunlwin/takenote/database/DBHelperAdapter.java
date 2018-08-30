@@ -45,7 +45,7 @@ public class DBHelperAdapter {
 
     public ArrayList<NoteModel> dataQuery() {
         ArrayList<NoteModel> noteModels = new ArrayList<>();
-        String[] columns = {DBHelper.Note_ID, DBHelper.Note_Content};
+        String[] columns = {DBHelper.Note_ID,DBHelper.Note_Title, DBHelper.Note_Content};
         Cursor c = db.query(DBHelper.TB_Name, columns, null, null, null, null, null);
 
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
